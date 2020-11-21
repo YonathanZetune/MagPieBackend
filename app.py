@@ -5,8 +5,10 @@ import requests
 from decouple import config
 # Imports the Google Cloud client library
 from google.cloud import language_v1
+from flask_cors import CORS
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 @app.route("/")
 def hello():
