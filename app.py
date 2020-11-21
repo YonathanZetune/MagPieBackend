@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from bs4 import BeautifulSoup as soup
 import requests
+from decouple import config
 # Imports the Google Cloud client library
 from google.cloud import language_v1
 
@@ -21,6 +22,7 @@ def hello():
 
     # print("Text: {}".format(text))
     # print("Sentiment: {}, {}".format(sentiment.score, sentiment.magnitude))
+    #BEARER = config('BEARER')
     return "Hello, World!"
 
 @app.route("/sentiment", methods=['POST'])
