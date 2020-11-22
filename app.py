@@ -211,7 +211,10 @@ def searchPhrase():
             taga = card.find('a')
             url = card.find('a')['href']
             source = taga.find('div',class_="XTjFC WF4CUc").text
-            title = ((taga.find('div',class_="hI5pFf")).text)
+            try:
+                title = ((taga.find('div',class_="hI5pFf")).text)
+            except:
+                title = ""
             description = taga.find('div', class_="Y3v8qd").text
             timestamp = taga.find('span', class_="WG9SHc").text
             title = title.replace(source,"")
