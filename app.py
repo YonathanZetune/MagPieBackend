@@ -204,7 +204,7 @@ def searchPhrase():
     
     for card in results:
         #print(card.prettify(), end='\n'*2)
-        if len(jsonReturn) < 6:
+        if len(jsonReturn) < 4:
             print(card.find('a')['href'], end='\n'*2)
             print((card.find('a')).find('g-img').find('img')['src'])
             # 'image': str((card.find('a')).find_all('g-img')[-1].find('img')['src'])
@@ -221,6 +221,13 @@ def searchPhrase():
             description = description.replace("\n","")
             sentimentScore = calculateSentimentScore(getSentimentFromWeb(description))
             color = calcSentimentColor(sentimentScore)
+            # URL = "https://www.google.com/search?q="+(tweetEnts)+"&tbm=nws"
+            page = requests.get(url, headers=headers)
+            soup2 = soup(page.content, 'html.parser')
+            if soup2.find('meta', property="og:image"):
+                imgUrl = soup2.find('meta', property="og:image")['content']
+            # imgUrl = 
+            print(imgUrl)
             tempJson = {
                 'url' : url, 
                 'source': source,
@@ -228,7 +235,8 @@ def searchPhrase():
                 'timestamp': timestamp,
                 'description': description,
                 'sentimentScore': sentimentScore,
-                'color': color
+                'color': color,
+                'image': imgUrl
                 }
             jsonReturn.append(tempJson)
     #job_elems = results.find_all('section', class_='card-content')
