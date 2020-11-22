@@ -204,7 +204,7 @@ def searchPhrase():
     
     for card in results:
         #print(card.prettify(), end='\n'*2)
-        if len(jsonReturn) < 6:
+        if len(jsonReturn) < 4:
             print(card.find('a')['href'], end='\n'*2)
             print((card.find('a')).find('g-img').find('img')['src'])
             # 'image': str((card.find('a')).find_all('g-img')[-1].find('img')['src'])
