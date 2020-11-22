@@ -227,6 +227,7 @@ def searchPhrase():
             # URL = "https://www.google.com/search?q="+(tweetEnts)+"&tbm=nws"
             page = requests.get(url, headers=headers)
             soup2 = soup(page.content, 'html.parser')
+            imgUrl = ""
             if soup2.find('meta', property="og:image"):
                 imgUrl = soup2.find('meta', property="og:image")['content']
             # imgUrl = 
