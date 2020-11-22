@@ -230,7 +230,7 @@ def searchPhrase():
             if soup2.find('meta', property="og:image"):
                 imgUrl = soup2.find('meta', property="og:image")['content']
             # imgUrl = 
-            print(imgUrl)
+            # print(imgUrl)
             tempJson = {
                 'url' : url, 
                 'source': source,
