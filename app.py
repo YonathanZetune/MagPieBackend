@@ -23,7 +23,7 @@ creds2 = service_account.Credentials.from_service_account_info({
   "project_id": config('project_id'),
   "private_key_id": config('private_key_id'),
 #   "private_key": r"".join(config('private_key')),
-  "private_key": os.environ['private_key'],
+  "private_key": json.loads(os.environ['private_key']),
 
   "client_email": config('client_email'),
   "client_id": config('client_id'),
@@ -227,6 +227,6 @@ def searchPhrase():
             jsonReturn.append(tempJson)
     #job_elems = results.find_all('section', class_='card-content')
     return jsonify(jsonReturn)
-
+    
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
