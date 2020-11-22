@@ -3,12 +3,36 @@ from flask import request
 from bs4 import BeautifulSoup as soup
 import requests
 from decouple import config
+import json
+from dotenv import load_dotenv
+import os
+
 # Imports the Google Cloud client library
 from google.cloud import language_v1
+from google.oauth2 import service_account, credentials
 from flask_cors import CORS
+load_dotenv()
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
+# privatekey = config('private_key')
+# privatekey = privatekey.replace("\\\\", "\\")
+# print(privatekey)
+creds2 = service_account.Credentials.from_service_account_info({
+  "type": config('type'),
+  "project_id": config('project_id'),
+  "private_key_id": config('private_key_id'),
+#   "private_key": r"".join(config('private_key')),
+  "private_key": json.loads(os.environ['private_key']),
+
+  "client_email": config('client_email'),
+  "client_id": config('client_id'),
+  "auth_uri": config('auth_uri'),
+  "token_uri": config('token_uri'),
+  "auth_provider_x509_cert_url": config('auth_provider_x509_cert_url'),
+  "client_x509_cert_url": config('client_x509_cert_url')
+})
+
 
 @app.route("/")
 def hello():
@@ -30,7 +54,7 @@ def hello():
 @app.route("/sentiment", methods=['POST'])
 def getSentiment():
   # Instantiates a client
-    client = language_v1.LanguageServiceClient()
+    client = language_v1.LanguageServiceClient(credentials=creds2)
     data = request.get_json()
 
     print("Text: "+(data["data"]))
@@ -55,7 +79,7 @@ def getSentimentFromWeb(description):
     # URL = url
     # page = requests.get(URL, headers=headers)
     # soup1 = soup(page.content, 'html.parser')
-    client = language_v1.LanguageServiceClient()
+    client = language_v1.LanguageServiceClient(credentials=creds2)
     # data = soup1.find('body').text
     # wordlen = len(data)
     # half = int(wordlen / 2)
@@ -81,7 +105,7 @@ def getSentimentFromWeb(description):
 @app.route("/testEntity", methods=['POST'])
 def getEntity():
   # Instantiates a client
-    client = language_v1.LanguageServiceClient()
+    client = language_v1.LanguageServiceClient(credentials=json.dumps(creds))
     data = request.get_json()
 
     print("Text: "+(data["data"]))
@@ -91,7 +115,7 @@ def getEntity():
     return getTweetEntities(text)
 
 def getTweetEntities(tweetText):
-    client = language_v1.LanguageServiceClient()
+    client = language_v1.LanguageServiceClient(credentials=creds2)
 
     # text_content = 'California is a state.'
 
