@@ -227,6 +227,6 @@ def searchPhrase():
             jsonReturn.append(tempJson)
     #job_elems = results.find_all('section', class_='card-content')
     return jsonify(jsonReturn)
-
+    
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
