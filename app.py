@@ -151,7 +151,14 @@ def calculateSentimentScore(score):
     sentiment = 50
     multiplier = 50*score
     sentiment += multiplier
-    return sentiment
+    return int(sentiment)
+
+def calcSentimentColor(score):
+    if score > 40:
+        return 2
+    elif score > 25:
+        return 1
+    return 0
 
 @app.route("/search", methods=['POST'])
 def searchPhrase():
@@ -183,13 +190,15 @@ def searchPhrase():
             title = title.replace("\n","")
             description = description.replace("\n","")
             sentimentScore = calculateSentimentScore(getSentimentFromWeb(description))
+            color = calcSentimentColor(sentimentScore)
             tempJson = {
                 'url' : url, 
                 'source': source,
                 'title': title,
                 'timestamp': timestamp,
                 'description': description,
-                'sentimentScore': sentimentScore
+                'sentimentScore': sentimentScore,
+                'color': color
                 }
             jsonReturn.append(tempJson)
     #job_elems = results.find_all('section', class_='card-content')
