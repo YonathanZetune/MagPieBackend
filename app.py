@@ -24,6 +24,8 @@ creds2 = service_account.Credentials.from_service_account_info({
   "private_key_id": config('private_key_id'),
 #   "private_key": r"".join(config('private_key')),
   "private_key": json.loads(os.environ['private_key']),
+#   "private_key": (os.environ['private_key']),
+
 
   "client_email": config('client_email'),
   "client_id": config('client_id'),
@@ -139,7 +141,7 @@ def getTweetEntities(tweetText):
         print(u"Representative name for the entity: {}".format(entity.name))
 
         # Get entity type, e.g. PERSON, LOCATION, ADDRESS, NUMBER, et al
-        # print(u"Entity type: {}".format(language_v1.Entity.Type(entity.type_).name))
+        print(u"Entity type: {}".format(language_v1.Entity.Type(entity.type_).name))
 
         # Get the salience score associated with the entity in the [0, 1.0] range
         #print(u"Salience score: {}".format(entity.salience))
@@ -156,9 +158,12 @@ def getTweetEntities(tweetText):
         
         for mention in entity.mentions:
             print(u"Mention text: {}".format(mention.text.content))
-            if not mention.text.content in tweetEntities:
-                output += "+" + mention.text.content
-                tweetEntities.append(mention.text.content)
+            if (not mention.text.content in tweetEntities) and (not "http" in mention.text.content) :
+                ents = mention.text.content.split(" ")
+                for enti in ents:
+                    output += "+" 
+                    output += enti
+                    tweetEntities.append(enti)
 
             # Get the mention type, e.g. PROPER for proper noun
             # print(
@@ -169,6 +174,7 @@ def getTweetEntities(tweetText):
     # the language specified in the request or, if not specified,
     # the automatically-detected language.
     # print(u"Language of the text: {}".format(response.language))
+    print(output[1:])
     return output[1:]
 
 def calculateSentimentScore(score):
